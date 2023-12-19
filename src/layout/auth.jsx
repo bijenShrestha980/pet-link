@@ -42,7 +42,7 @@ const Auth = () => {
             exit={{ x: -200, opacity: 0 }}
             transition={{ duration: 0.9 }}
           >
-            <ul class="circles">
+            <ul className="circles">
               <li></li>
               <li></li>
               <li></li>
@@ -59,13 +59,9 @@ const Auth = () => {
                 Tap to connect!
               </h1>
               <ul className="flex list-disc flex-col gap-[16px] text-[16px] font-[400]">
-                <li className=" leading-[22px]">
-                  Share your social media links
-                </li>
-                <li className=" leading-[22px]">Share your book and files</li>
-                <li className=" leading-[22px]">
-                  Share your images and videos
-                </li>
+                <li className=" leading-[22px]">Adventures made safe</li>
+                <li className=" leading-[22px]">Safety meets technology</li>
+                <li className=" leading-[22px]">Your pet's silent guardian</li>
               </ul>
               <picture className="hidden md:block">
                 <source media="(max-width:768px)" />

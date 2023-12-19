@@ -27,6 +27,7 @@ import PageSetupModal from "../../../../components/Modal/PageSetupModal";
 import Loader from "../../../../layout/Loader/Loader";
 import BioLinksModal from "../../../../components/Modal/BioLinksModal";
 import PagePreviewCard from "../../../../components/Card/PagePreviewCard";
+import { image } from "@uiw/react-md-editor";
 
 const EditBio_link = () => {
   const { token } = useSelector(appSelector);
@@ -230,6 +231,7 @@ const Form = (props) => {
         ...(typeof item.id === "number" && {
           id: item.id,
         }),
+        // ...(item.image ? image : item.image),
         url:
           item.name.toLowerCase() === "phone"
             ? "tel:" +
@@ -392,17 +394,17 @@ const Form = (props) => {
     });
 
     // send data
-    // managePage({
-    //   bio: bioDataToSend,
-    //   card: cardDataToSend,
-    //   name: data.name,
-    //   intro: data.intro,
-    //   type: "bio-link",
-    //   page_id: props.pageId,
-    //   ...(props.pageData?.page?.map?.content?.id && {
-    //     id: props.pageData?.page?.map?.content?.id,
-    //   }),
-    // });
+    managePage({
+      bio: bioDataToSend,
+      card: cardDataToSend,
+      name: data.name,
+      intro: data.intro,
+      type: "bio-link",
+      page_id: props.pageId,
+      ...(props.pageData?.page?.map?.content?.id && {
+        id: props.pageData?.page?.map?.content?.id,
+      }),
+    });
   };
 
   // set landline value
@@ -599,29 +601,34 @@ const Form = (props) => {
                     item.name.toLowerCase() === "wechat" ||
                     item.name.toLowerCase() === "phone" ||
                     item.name.toLowerCase() === "viber" ||
-                    item.name.toLowerCase() === "snap_chat"
-                      ? "Number"
-                      : item.name.toLowerCase() === "facebook" ||
-                          item.name.toLowerCase() === "messenger" ||
-                          item.name.toLowerCase() === "instagram" ||
-                          item.name.toLowerCase() === "twitter" ||
-                          item.name.toLowerCase() === "tiktok"
-                        ? "Username"
-                        : item.name.toLowerCase() === "youtube" ||
-                            item.name.toLowerCase() === "vimeo" ||
-                            item.name.toLowerCase() === "behance" ||
-                            item.name.toLowerCase() === "flickr" ||
-                            item.name.toLowerCase() === "linkedin" ||
-                            item.name.toLowerCase() === "pinterest" ||
-                            item.name.toLowerCase() === "skype" ||
-                            item.name.toLowerCase() === "telegram" ||
-                            item.name.toLowerCase() === "tripadvisor"
-                          ? "ID"
-                          : item.name.toLowerCase() === "gmail"
-                            ? "Email"
-                            : item.name.toLowerCase() === "zoom"
-                              ? "URL"
-                              : "Link"}
+                    item.name.toLowerCase() === "snap_chat" ? (
+                      "Number"
+                    ) : item.name.toLowerCase() === "facebook" ||
+                      item.name.toLowerCase() === "messenger" ||
+                      item.name.toLowerCase() === "instagram" ||
+                      item.name.toLowerCase() === "twitter" ||
+                      item.name.toLowerCase() === "tiktok" ? (
+                      "Username"
+                    ) : item.name.toLowerCase() === "youtube" ||
+                      item.name.toLowerCase() === "vimeo" ||
+                      item.name.toLowerCase() === "behance" ||
+                      item.name.toLowerCase() === "flickr" ||
+                      item.name.toLowerCase() === "linkedin" ||
+                      item.name.toLowerCase() === "pinterest" ||
+                      item.name.toLowerCase() === "skype" ||
+                      item.name.toLowerCase() === "telegram" ||
+                      item.name.toLowerCase() === "tripadvisor" ? (
+                      "ID"
+                    ) : item.name.toLowerCase() === "gmail" ? (
+                      "Email"
+                    ) : item.name.toLowerCase() === "zoom" ? (
+                      "URL"
+                    ) : (
+                      <div>
+                        <span>Link</span>
+                        <span>Image</span>
+                      </div>
+                    )}
 
                     {Object.entries(errors).map(
                       (value) =>
@@ -834,84 +841,74 @@ const Form = (props) => {
                           />
                         </>
                       )}
-                      <Controller
-                        name={`alias=${item.id}`}
-                        defaultValue={
-                          item.alias
-                            ? item.alias.split("-").length > 1
-                              ? item.alias.split("-")[1]
-                              : item.alias
-                            : ""
-                        }
-                        // defaultValue={
-                        //   item.alias
-                        //     ? item.name.toLowerCase() === "whatsapp" ||
-                        //       item.name.toLowerCase() === "wechat" ||
-                        //       item.name.toLowerCase() === "phone" ||
-                        //       item.name.toLowerCase() === "viber" ||
-                        //       item.name.toLowerCase() === "snapchat"
-                        //       ? item.alias?.split("-").length > 1
-                        //         ? item.alias?.split("-")[1]
-                        //         : item.alias
-                        //       : item.alias
-                        //     : ""
-                        // }
-                        control={control}
-                        rules={{
-                          required: "This field is required",
-                          minLength: {
-                            value: 1,
-                            message: "Min character length required",
-                          },
-                          maxLength: {
-                            value: 99,
-                            message: "Max character length exceded",
-                          },
-                        }}
-                        render={({ field }) => (
-                          <input
-                            onWheel={(e) => e.target.blur()}
-                            type={
-                              item.name.toLowerCase() === "whatsapp" ||
-                              item.name.toLowerCase() === "wechat" ||
-                              item.name.toLowerCase() === "phone" ||
-                              item.name.toLowerCase() === "viber" ||
-                              item.name.toLowerCase() === "snap_chat" ||
-                              item.name.toLowerCase() === "facebook" ||
-                              item.name.toLowerCase() === "messenger" ||
-                              item.name.toLowerCase() === "instagram" ||
-                              item.name.toLowerCase() === "twitter" ||
-                              item.name.toLowerCase() === "tiktok"
-                                ? "text"
-                                : item.name.toLowerCase() === "youtube" ||
-                                    item.name.toLowerCase() === "vimeo" ||
-                                    item.name.toLowerCase() === "behance" ||
-                                    item.name.toLowerCase() === "flickr" ||
-                                    item.name.toLowerCase() === "linkedin" ||
-                                    item.name.toLowerCase() === "pinterest" ||
-                                    item.name.toLowerCase() === "skype" ||
-                                    item.name.toLowerCase() === "telegram" ||
-                                    item.name.toLowerCase() === "tripadvisor"
+                      {item.name.toLowerCase() === "whatsapp" ||
+                      item.name.toLowerCase() === "wechat" ||
+                      item.name.toLowerCase() === "phone" ||
+                      item.name.toLowerCase() === "viber" ||
+                      item.name.toLowerCase() === "snap_chat" ||
+                      item.name.toLowerCase() === "facebook" ||
+                      item.name.toLowerCase() === "messenger" ||
+                      item.name.toLowerCase() === "instagram" ||
+                      item.name.toLowerCase() === "twitter" ||
+                      item.name.toLowerCase() === "tiktok" ||
+                      item.name.toLowerCase() === "youtube" ||
+                      item.name.toLowerCase() === "vimeo" ||
+                      item.name.toLowerCase() === "behance" ||
+                      item.name.toLowerCase() === "flickr" ||
+                      item.name.toLowerCase() === "linkedin" ||
+                      item.name.toLowerCase() === "pinterest" ||
+                      item.name.toLowerCase() === "skype" ||
+                      item.name.toLowerCase() === "telegram" ||
+                      item.name.toLowerCase() === "tripadvisor" ? (
+                        <Controller
+                          name={`alias=${item.id}`}
+                          defaultValue={
+                            item.alias
+                              ? item.alias.split("-").length > 1
+                                ? item.alias.split("-")[1]
+                                : item.alias
+                              : ""
+                          }
+                          // defaultValue={
+                          //   item.alias
+                          //     ? item.name.toLowerCase() === "whatsapp" ||
+                          //       item.name.toLowerCase() === "wechat" ||
+                          //       item.name.toLowerCase() === "phone" ||
+                          //       item.name.toLowerCase() === "viber" ||
+                          //       item.name.toLowerCase() === "snapchat"
+                          //       ? item.alias?.split("-").length > 1
+                          //         ? item.alias?.split("-")[1]
+                          //         : item.alias
+                          //       : item.alias
+                          //     : ""
+                          // }
+                          control={control}
+                          rules={{
+                            required: "This field is required",
+                            minLength: {
+                              value: 1,
+                              message: "Min character length required",
+                            },
+                            maxLength: {
+                              value: 99,
+                              message: "Max character length exceded",
+                            },
+                          }}
+                          render={({ field }) => (
+                            <input
+                              onWheel={(e) => e.target.blur()}
+                              type={
+                                item.name.toLowerCase() === "whatsapp" ||
+                                item.name.toLowerCase() === "wechat" ||
+                                item.name.toLowerCase() === "phone" ||
+                                item.name.toLowerCase() === "viber" ||
+                                item.name.toLowerCase() === "snap_chat" ||
+                                item.name.toLowerCase() === "facebook" ||
+                                item.name.toLowerCase() === "messenger" ||
+                                item.name.toLowerCase() === "instagram" ||
+                                item.name.toLowerCase() === "twitter" ||
+                                item.name.toLowerCase() === "tiktok"
                                   ? "text"
-                                  : item.name.toLowerCase() === "gmail"
-                                    ? "email"
-                                    : item.name.toLowerCase() === "zoom"
-                                      ? "url"
-                                      : "url"
-                            }
-                            placeholder={
-                              item.name.toLowerCase() === "whatsapp" ||
-                              item.name.toLowerCase() === "wechat" ||
-                              item.name.toLowerCase() === "phone" ||
-                              item.name.toLowerCase() === "viber" ||
-                              item.name.toLowerCase() === "snap_chat"
-                                ? "Enter your number"
-                                : item.name.toLowerCase() === "facebook" ||
-                                    item.name.toLowerCase() === "messenger" ||
-                                    item.name.toLowerCase() === "instagram" ||
-                                    item.name.toLowerCase() === "twitter" ||
-                                    item.name.toLowerCase() === "tiktok"
-                                  ? "Enter your username"
                                   : item.name.toLowerCase() === "youtube" ||
                                       item.name.toLowerCase() === "vimeo" ||
                                       item.name.toLowerCase() === "behance" ||
@@ -921,26 +918,127 @@ const Form = (props) => {
                                       item.name.toLowerCase() === "skype" ||
                                       item.name.toLowerCase() === "telegram" ||
                                       item.name.toLowerCase() === "tripadvisor"
-                                    ? "Enter your ID"
+                                    ? "text"
                                     : item.name.toLowerCase() === "gmail"
-                                      ? "Enter your email"
+                                      ? "email"
                                       : item.name.toLowerCase() === "zoom"
-                                        ? "Enter your zoom link"
-                                        : "Enter your link"
-                            }
-                            className={`bg-[#EEEEEE] text-[#262626] text-[14px] font-[400] leading-[21px] h-[46px] rounded-md p-[14px] pt-[18px] outline-none w-full grow ${
-                              item.name.toLowerCase() === "whatsapp" ||
-                              item.name.toLowerCase() === "wechat" ||
-                              item.name.toLowerCase() === "phone" ||
-                              item.name.toLowerCase() === "viber" ||
-                              item.name.toLowerCase() === "snap_chat"
-                                ? "pl-[105px]"
+                                        ? "url"
+                                        : "url"
+                              }
+                              placeholder={
+                                item.name.toLowerCase() === "whatsapp" ||
+                                item.name.toLowerCase() === "wechat" ||
+                                item.name.toLowerCase() === "phone" ||
+                                item.name.toLowerCase() === "viber" ||
+                                item.name.toLowerCase() === "snap_chat"
+                                  ? "Enter your number"
+                                  : item.name.toLowerCase() === "facebook" ||
+                                      item.name.toLowerCase() === "messenger" ||
+                                      item.name.toLowerCase() === "instagram" ||
+                                      item.name.toLowerCase() === "twitter" ||
+                                      item.name.toLowerCase() === "tiktok"
+                                    ? "Enter your username"
+                                    : item.name.toLowerCase() === "youtube" ||
+                                        item.name.toLowerCase() === "vimeo" ||
+                                        item.name.toLowerCase() === "behance" ||
+                                        item.name.toLowerCase() === "flickr" ||
+                                        item.name.toLowerCase() ===
+                                          "linkedin" ||
+                                        item.name.toLowerCase() ===
+                                          "pinterest" ||
+                                        item.name.toLowerCase() === "skype" ||
+                                        item.name.toLowerCase() ===
+                                          "telegram" ||
+                                        item.name.toLowerCase() ===
+                                          "tripadvisor"
+                                      ? "Enter your ID"
+                                      : item.name.toLowerCase() === "gmail"
+                                        ? "Enter your email"
+                                        : item.name.toLowerCase() === "zoom"
+                                          ? "Enter your zoom link"
+                                          : "Enter your link"
+                              }
+                              className={`bg-[#EEEEEE] text-[#262626] text-[14px] font-[400] leading-[21px] h-[46px] rounded-md p-[14px] pt-[18px] outline-none w-full grow ${
+                                item.name.toLowerCase() === "whatsapp" ||
+                                item.name.toLowerCase() === "wechat" ||
+                                item.name.toLowerCase() === "phone" ||
+                                item.name.toLowerCase() === "viber" ||
+                                item.name.toLowerCase() === "snap_chat"
+                                  ? "pl-[105px]"
+                                  : ""
+                              }`}
+                              {...field}
+                            />
+                          )}
+                        />
+                      ) : (
+                        <div className="flex flex-col gap-4">
+                          <Controller
+                            name={`alias=${item.id}`}
+                            defaultValue={
+                              item.alias
+                                ? item.alias.split("-").length > 1
+                                  ? item.alias.split("-")[1]
+                                  : item.alias
                                 : ""
-                            }`}
-                            {...field}
+                            }
+                            control={control}
+                            rules={{
+                              required: "This field is required",
+                              minLength: {
+                                value: 1,
+                                message: "Min character length required",
+                              },
+                              maxLength: {
+                                value: 99,
+                                message: "Max character length exceded",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <input
+                                onWheel={(e) => e.target.blur()}
+                                type="url"
+                                placeholder="Enter your link"
+                                className={`bg-[#EEEEEE] text-[#262626] text-[14px] font-[400] leading-[21px] h-[46px] rounded-md p-[14px] pt-[18px] outline-none w-full grow`}
+                                {...field}
+                              />
+                            )}
                           />
-                        )}
-                      />
+                          <Controller
+                            name="wf"
+                            // name={`alias=${item.id}`}
+                            // defaultValue={
+                            //   item.alias
+                            //     ? item.alias.split("-").length > 1
+                            //       ? item.alias.split("-")[1]
+                            //       : item.alias
+                            //     : ""
+                            // }
+                            control={control}
+                            rules={{
+                              required: "This field is required",
+                              minLength: {
+                                value: 1,
+                                message: "Min character length required",
+                              },
+                              maxLength: {
+                                value: 99,
+                                message: "Max character length exceded",
+                              },
+                            }}
+                            render={({ field }) => (
+                              <input
+                                // onWheel={(e) => e.target.blur()}
+                                type="file"
+                                // placeholder="Enter your link"
+                                accept="image/png, image/jpeg"
+                                className={`bg-[#EEEEEE] text-[#262626] text-[14px] font-[400] leading-[21px] h-[46px] rounded-md p-[14px] pt-[10px] outline-none w-full grow`}
+                                // {...field}
+                              />
+                            )}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
